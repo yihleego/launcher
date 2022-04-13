@@ -22,7 +22,7 @@ python launcher.py -a <app> -n <num> -p <path>
 
        python launcher.py -a wechat -n 2
 
-3. Launch one WeChat client with an alias. (More alias see: [config](/src/config.yml))
+3. Launch one WeChat client with an alias. (More alias see: [config](/src/config.json))
 
        python launcher.py -a wx
 

@@ -1,0 +1,26 @@
+{
+  "wechat": {
+    "app_name": "WeChat",
+    "process_name": "WeChat.exe",
+    "mutex_names": ["\\_WeChat_App_Instance_Identity_Mutex_Name"],
+    "registry_key_name": "SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\WeChat",
+    "registry_value_name": "DisplayIcon",
+    "alias": ["wx", "vx", "weixin", "微信"]
+  },
+  "wecom": {
+    "app_name": "WeCom",
+    "process_name": "WXWork.exe",
+    "mutex_names": ["\\Tencent.WeWork.ExclusiveObject", "\\Tencent.WeWork.ExclusiveObjectInstance1"],
+    "registry_key_name": "SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\企业微信",
+    "registry_value_name": "DisplayIcon",
+    "alias": ["wc", "wework", "qywx", "企微", "企业微信"]
+  },
+  "dingtalk": {
+    "app_name": "DingTalk",
+    "process_name": "DingTalk.exe",
+    "mutex_names": ["\\{{239B7D43-86D5-4E5C-ADE6-CEC42155B475}}DingTalk", "\\{{239B7D43-86D5-4E5C-ADE6-CEC42155B475}}DingTalk_loginframe"],
+    "registry_key_name": "SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\钉钉",
+    "registry_value_name": "DisplayIcon",
+    "alias": ["dd", "dingding", "钉钉"]
+  }
+}

@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 import getopt
+import json
+import multiprocessing
 import os
 import sys
 import winreg
 
 import psutil
-import win32process
-import yaml
 
 import pywinhandle
 
 
-def main(argv, configs: dict):
+def main(argv):
     app = None
     num = 1
     path = None
@@ -34,6 +34,7 @@ def main(argv, configs: dict):
         print(f"Invalid app")
         sys.exit(2)
     lower_name = app.lower()
+    configs = json.load(open(os.path.abspath('config.json'), 'r', encoding='utf-8'))
     for name, config in configs.items():
         alias = config.get('alias', {})
         if lower_name == name or lower_name in alias:
@@ -47,11 +48,13 @@ def launch(num, path, config):
     app_name = config.get('app_name')
     process_name = config.get('process_name')
     mutex_names = config.get('mutex_names')
+    registry_key_name = config.get('registry_key_name')
+    registry_value_name = config.get('registry_value_name')
     if not path or not os.path.exists(path):
-        path = get_path(config.get('registry_key_name'), config.get('registry_value_name'))
+        path = get_path(registry_key_name, registry_value_name)
     if not path:
         print(f"Cannot find path for '{app_name}'")
-        return
+        sys.exit(2)
     for i in range(num):
         if process_name and mutex_names:
             process_ids = []
@@ -61,9 +64,10 @@ def launch(num, path, config):
             if process_ids:
                 handles = pywinhandle.find_handles(process_ids=process_ids, handle_names=mutex_names)
                 pywinhandle.close_handles(handles)
-        p = win32process.CreateProcess(path, '', None, None, 0, 0, None, None, win32process.STARTUPINFO())
-        if p and len(p) > 1:
-            print(f"[+] {app_name} ({p[2]}) OK!")
+        p = multiprocessing.Process(target=path)
+        p.start()
+        p.join()
+        print(f"[+] {app_name} ({p}) OK!")
 
 
 def get_path(key_name, value_name):
@@ -82,5 +86,4 @@ def get_path(key_name, value_name):
 
 
 if __name__ == "__main__":
-    configs = yaml.load(open(os.path.abspath('./config.yml'), 'r', encoding='utf-8'), Loader=yaml.SafeLoader)
-    main(sys.argv[1:], configs.get('apps', {}))
+    main(sys.argv[1:])
